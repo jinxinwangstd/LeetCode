@@ -21,22 +21,25 @@ class Solution
 public:
 	ListNode* removeNthFromEnd(ListNode* head, int n)
 	{
-		if (!head)
+		if (!head)			// corner case: empty list, and we return NULL
 			return head;
 		ListNode *cur = head;
 		int num = 0;
 		vector<ListNode *> node_ptrs;
+		// record the pointers to every node in the list
 		while (cur)
 		{
 			node_ptrs.push_back(cur);
 			num++;
 			cur = cur->next;
 		}
+		// remove the first node
 		if (n == num)
 			return num > 1 ? node_ptrs[1] : NULL;
-		int index = num - n;
+		// else remove other node in the list
+		int index = num - n;	// find the index of the node to be removed from the start
 		ListNode *prev = node_ptrs[index - 1], *removed = node_ptrs[index];
-		prev->next = removed->next;
+		prev->next = removed->next;		// remove it
 		return head;
 	}
 };
