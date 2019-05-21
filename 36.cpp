@@ -10,7 +10,7 @@ class Solution
 public:
 	const int num = 9;
 	const int num_sub = 3;
-	bool isValidSudoku(vector<vector<char>>& board)
+	bool isValidSudoku(vector< vector<char> >& board)
 	{
 		bitset<10> record;		// Use a bitset to record whether an integer repeats
 		// Check the validality of each row
