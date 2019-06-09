@@ -12,33 +12,28 @@ typedef vector<ii> vii;
 class Solution
 {
 public:
+	// This function finds the closest 3-sum set to the target based on a greedy algorithm
 	int threeSumClosest(vector<int>& nums, int target)
 	{
-		int ret = 0, difference = INT_MAX;
-		sort(nums.begin(), nums.end());
-		int num = (int) nums.size();
-		for (int i = 0; i != num; ++i)
+		sort(nums.begin(), nums.end());		// necessary operation to avoid duplicate 3-sum or duplicate elements in a 3-sum
+		int ret = nums[0] + nums[1] + nums[2];
+		int n = (int) nums.size();
+		// For 3-sums with the same first element, find the closest set
+		for (int i = 0; i < n; ++i)
 		{
-			for (int j = i + 1; j != num; ++j)
+			int j = i + 1, k = n - 1;
+			while (j < k)
 			{
-				// We have chosen the first two numbers by enumerations
-				int rest = target - nums[i] - nums[j];
-				int r, d;			// r is the closest value to the rest and d is the difference between r and rest
-				int k = distance(nums.begin(), lower_bound(nums.begin(), nums.end(), rest));	// the index of the third element
-				if (k <= j)			// repeated three sum
-					continue;
-				if (k == num)							// choose nums[k-1] (nearest element < "rest") because all elements are smaller than "rest"
-					r = nums[num - 1];
-				else if (nums[k] == rest || k == 0)		// choose nums[k] (nearest element >= "rest") because it equals exactly "rest"
-					r = nums[k];
-				else 									// choose between nums[k-1] (nearest element < "rest") and nums[k-1] (nearest element > "rest")
-					r = abs(rest - nums[k]) > abs(rest - nums[k - 1]) ? nums[k - 1] : nums[k];
-				d = abs(rest - r);		// calculate the difference
-				if (d < difference)		// update the closest three sum
-				{
-					ret = r + nums[i] + nums[j];
-					difference = d;
-				}
+				int sum = nums[i] + nums[j] + nums[k];
+				if (abs(sum - target) < abs(ret - target))
+					ret = sum;
+				// gradually make it closer to target
+				if (sum < target)			// too small
+					++j;
+				else if (sum > target)		// too large
+					--k;
+				else 						// sum == target
+					return sum;
 			}
 		}
 		return ret;
