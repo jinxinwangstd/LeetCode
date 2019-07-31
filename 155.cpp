@@ -46,18 +46,3 @@ private:
 	stack<ii> s;
 	int min;
 };
-
-int main()
-{
-#ifdef FI
-	freopen("input.txt", "r", stdin);
-#endif
-	MinStack minStack = new MinStack();
-	minStack.push(-2);
-	minStack.push(0);
-	minStack.push(-3);
-	minStack.getMin();
-	minStack.pop();
-	minStack.top();
-	minStack.getMin();
-}
