@@ -18,20 +18,20 @@ struct TreeNode {
 
 class Solution {
 public:
-    void preorderSearch(TreeNode *root, int k, int *ret) {
+    void inorderSearch(TreeNode *root, int k, int *ret) {
         if (root->left)
-            preorderSearch(root->left, k);
+            inorderSearch(root->left, k, ret);
         n++;
         if (n == k)
             *ret = root->val;
         if (root->right)
-            preorderSearch(root->right, k);
+            inorderSearch(root->right, k, ret);
         return;
     }
     int kthSmallest(TreeNode *root, int k) {
         n = 0;
         int ret;
-        preorderSearch(root, k, &ret);
+        inorderSearch(root, k, &ret);
         return ret;
     }
 private:
