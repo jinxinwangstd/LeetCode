@@ -8,31 +8,27 @@ using ld = long double;
 class Solution
 {
 public:
-	static const int maxn = 1000 + 5;
-	int memo[maxn][maxn];
-	int findLongestPalindrome(const string& s, int i, int j)
-	{
-		if (i == j)
-			return 0;
-		if (i + 1 == j)
-			return memo[i][j] = 1;
-		if (memo[i][j] != 0)
-			return memo[i][j];
-		if (s[i] == s[j - 1] && findLongestPalindrome(s, i + 1, j - 1) == (j - i - 2))
-			return memo[i][j] = j - i;
-		else
-			return memo[i][j] = max(findLongestPalindrome(s, i + 1, j), findLongestPalindrome(s, i, j - 1));
-	}
-	// TODO(Alex): Using Manacher's algorithm
-	string longestPalindrome(string s)
-	{
-		memset(memo, 0, size(memo));
-		int ret = findLongestPalindrome(s, 0, (int)s.size());
-		for (int i = 0; i != (int)s.size(); ++i)
-		{
-			if (memo[i][i + ret] == ret)
-				return s.substr(i, ret);
-		}
-		return string();
-	}
+    string longestPalindrome(string s) {
+        if (s.empty())
+            return "";
+        int start = 0, end = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            int len1 = generatePalindrome(s, i, i);
+            int len2 = generatePalindrome(s, i, i + 1);
+            int len = max(len1, len2);
+            if (len > end - start + 1) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substr(start, end - start + 1);
+    }
+    // This function generate a palindrome from a single character or two characters
+    int generatePalindrome(string& s, int left, int right) {
+        while (left >= 0 && right < s.size() && s[left] == s[right]) {
+            left--;
+            right++;
+        }
+        return right - left - 1;    // left and right is the position of two non-palindrome characters
+    }
 };

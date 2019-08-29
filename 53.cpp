@@ -9,30 +9,23 @@ typedef vector<int> vi;
 typedef pair<int, int> ii;
 typedef vector<ii> vii;
 
-class Solution
-{
+class Solution {
 public:
-	// This function calculate the largest sum of a subarray of the given array
-	// The main idea is to separate the array into many segments, and the sum of each segment is <= 0 except the last one
-	// we just calculate the largest subarray in each segment
-	int maxSubArray(vector<int>& nums)
-	{
-		if (nums.empty())		// corner case: the array is empty then we just return 0
-			return 0;
-		int start = 0, sum = 0, max_sum = INT_MIN, n = (int) nums.size();
-		while (start < n)
-		{
-			// calculate the sum of current segment
-			sum += nums[start];
-			if (sum > max_sum)
-				max_sum = sum;
-			// if the sum of current segment is <= 0, then we can start a new segment
-			// the next segment don't need to include the previous segment because it would not contribute to its sum
-			// any subarray of the previous segment to its right bound is <= 0
-			if (sum <= 0)
-				sum = 0;
-			++start;
-		}
-		return max_sum;
-	}
+    vi table;   // table[i] is the max sum of sequence starting at position i
+    int maxSubArray(vector<int>& nums) {
+        if (nums.empty())   // corner case: the array is empty then we just return 0
+            return 0;
+        int n = (int)nums.size();
+        table.assign(n, 0);
+        table[n - 1] = nums[n - 1];
+        int ret = table[n - 1];
+        for (int i = n - 2; i >= 0; --i) {
+            if (table[i + 1] > 0)       // if the following sequence is positive, we include them
+                table[i] = nums[i] + table[i + 1];
+            else                        // otherwise the max sequence is the number itself
+                table[i] = nums[i];
+            ret = max(ret, table[i]);
+        }
+        return ret;
+    }
 };

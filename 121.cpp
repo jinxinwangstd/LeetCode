@@ -9,18 +9,17 @@ typedef vector<int> vi;
 typedef pair<int, int> ii;
 typedef vector<ii> vii;
 
-class Solution
-{
+class Solution {
 public:
-	int maxProfit(vector<int>& prices)
-	{
-		int size = prices.size();
-		vi buys(size, INT_MAX);
-		for (int i = 1; i < size; ++i)
-			buys[i] = min(prices[i - 1], buys[i - 1]);
-		int ret = 0;
-		for (int i = 0; i < size; ++i)
-			ret = max(ret, prices[i] - buys[i]);
-		return ret > 0 ? ret : 0;
-	}
+    int maxProfit(vector<int>& prices) {
+        int min_price = INT_MAX, max_profit = 0;
+        int n = (int)prices.size();
+        for (int i = 0; i < n; ++i) {
+            if (prices[i] < min_price)  // find valley
+                min_price = prices[i];
+            else                        // find peak
+                max_profit = max(max_profit, prices[i] - min_price);
+        }
+        return max_profit;
+    }
 };

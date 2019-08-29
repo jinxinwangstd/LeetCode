@@ -19,6 +19,20 @@ struct TreeNode {
 class Solution {
 public:
     int closestValue(TreeNode *root, double target) {
-
+        // the left bound and right bound need to be far enough away from the normal range
+        ll left = LLONG_MIN, right = LLONG_MAX;
+        while (root) {
+            if (root->val > target) {
+                right = root->val;
+                root = root->left;
+            }
+            else if (root->val < target) {
+                left = root->val;
+                root = root->right;
+            }
+            else
+                return root->val;
+        }
+        return abs(left - target) < abs(right - target) ? left : right;
     }
 };
