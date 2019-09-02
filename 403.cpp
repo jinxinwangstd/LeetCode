@@ -9,7 +9,7 @@ class Solution {
 public:
     bool canCross(vector<int>& stones) {
         int n = stones.size();
-        const int m = 1000000;
+        const int m = 1100;     // max jump distance
         vector< vector<bool> > dp(n, vector<bool>(m, false));
         dp[0][1] = true;
 
