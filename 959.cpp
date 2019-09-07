@@ -7,7 +7,7 @@ using ld = long double;
 
 class Solution {
 public:
-    bool isPossible(vector<int>& nums) {
+    int regionsBySlashes(vector<string>& grid) {
         
     }
 };
