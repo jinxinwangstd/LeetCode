@@ -8,6 +8,6 @@ using ld = long double;
 class Solution {
 public:
     int trapRainWater(vector<vector<int>>& heightMap) {
-        
+                
     }
 };
