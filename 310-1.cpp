@@ -5,6 +5,7 @@ using ull = uint64_t;
 using ll = int64_t;
 using ld = long double;
 
+// TLE
 class Solution {
 public:
     vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
@@ -20,6 +21,7 @@ public:
         int dist[n];
         queue<int> q;
         for (int i = 0; i < n; i++) {
+            // BFS
             memset(dist, -1, sizeof(dist));
             q.push(i);
             dist[i] = 0;
