@@ -1,29 +1,30 @@
+// Do not use direct binary search, it would cause TLE
+// With too many times of get, O(lgn) is not fast enough
 class TimeMap {
 public:
     TimeMap() {}
 
     void set(string key, string value, int timestamp) {
-        m[key].push_back(make_pair(timestamp, value));
+        if (!stores.count(key))
+            stores[key] = vector<int>(1, -1);
+        int last_id = stores[key].back();
+        stores[key].insert(stores[key].end(), timestamp - stores[key].size(), last_id);
+        if (!value_ids.count(value)) {
+            value_ids[value] = values.size();
+            values.push_back(value);
+        }
+        stores[key].push_back(value_ids[value]);
     }
 
     string get(string key, int timestamp) {
-        vector<pair<int, string>> record = m[key];
-        int n = record.size();
-        int l = 0, r = n - 1, mid;
-        while (r - l > 1) {
-            mid = l + (r - l) / 2;
-            if (record[mid].first > timestamp)
-                r = mid;
-            else
-                l = mid;
-        }
-        if (record[r].first <= timestamp)
-            return record[r].second;
-        else if (record[l].first <= timestamp)
-            return record[l].second;
+        int value_id = timestamp >= stores[key].size() ? stores[key].back() : stores[key][timestamp];
+        if (value_id >= 0)
+            return values[value_id];
         else
             return "";
     }
 private:
-    unordered_map<string, vector<pair<int, string>>> m;
+    unordered_map<string, vector<int>> stores;
+    vector<string> values;
+    unordered_map<string, int> value_ids;
 };
