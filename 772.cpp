@@ -4,11 +4,13 @@ public:
         int n = s.size();
         deque<int> nums;
         deque<char> ops;
-        int num = 0, res = 0;
+        int res = 0, num = 0;
+        bool neg_sign = false;
         while (cur < n) {
             if (s[cur] == '+' || s[cur] == '-' || s[cur] == '*' || s[cur] == '/' || s[cur] == ')') {
                 nums.push_back(num);
                 num = 0;
+                neg_sign = false;
                 if (!ops.empty() && (ops.back() == '*' || ops.back() == '/')) {
                     int num2 = nums.back();
                     nums.pop_back();
@@ -24,18 +26,29 @@ public:
                 }
                 if (s[cur] == ')')
                     break;
+                else if (s[cur] == '-') {
+                    neg_sign = true;
+                    ops.push_back('+');
+                }
                 else
                     ops.push_back(s[cur]);
             }
             else if (isdigit(s[cur])) {
                 num *= 10;
-                num += s[cur] - '0';
+                if (neg_sign)
+                    num -= s[cur] - '0';
+                else
+                    num += s[cur] - '0';
             }
             else if (s[cur] == '(') {
                 num = calculateHelper(s, ++cur);
+                if (neg_sign)
+                    num = -num;
             }
             cur++;
         }
+        if (cur == n)
+            nums.push_back(num);
         while (!ops.empty()) {
             int num1 = nums.front();
             nums.pop_front();
